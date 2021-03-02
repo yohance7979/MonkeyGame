@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js" crossorigin=""></script>
+    <script src="https://assets.editor.p5js.org/5f2e9530dda7db0020471195/9cf0aeb4-ddc0-43d2-84e4-785aeb3998a9.js" crossorigin="">
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js" crossorigin=""></script>
+    
+    
+
+  <!--<base href="https://editor.p5js.org/yohancebadyal/sketches/U0FPEKGz0/">--><base href="."><style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+</style><script src="https://editor.p5js.org/previewScripts.js"></script><style data-emotion=""></style><script>
+    function getScriptOff(line) {
+      var offs = [[72,"sketch"]];
+      var l = 0;
+      var file = '';
+      for (var i=0; i<offs.length; i++) {
+        var n = offs[i][0];
+        if (n < line && n > l) {
+          l = n;
+          file = offs[i][1];
+        }
+      }
+      return [line - l, file];
+    }
+    // catch reference errors, via http://stackoverflow.com/a/12747364/2994108
+    window.onerror = function (msg, url, lineNumber, columnNo, error) {
+        var string = msg.toLowerCase();
+        var substring = "script error";
+        var data = {};
+        if (url.match(/^(http:\/\/|https:\/\/)/) !== null && error.stack){
+          var errorNum = error.stack.split('about:srcdoc:')[1].split(':')[0];
+          var fileInfo = getScriptOff(errorNum);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        } else {
+          var fileInfo = getScriptOff(lineNumber);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        }
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      return false;
+    };
+    // catch rejected promises
+    window.onunhandledrejection = function (event) {
+      if (event.reason && event.reason.message && event.reason.stack){
+        var errorNum = event.reason.stack.split('about:srcdoc:')[1].split(':')[0];
+        var fileInfo = getScriptOff(errorNum);
+        var data = event.reason.message + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      }
+    };
+  </script></head>
+  <body>
+    <script data-tag="@fs-sketch.js">var back,monkey,banana, score;
+var monkeyA, backI, bananaI, obstacleI, obstacleI;
+function preload(){
+  monkeyA = loadAnimation("https://assets.editor.p5js.org/5f2e9530dda7db0020471195/d1ec4052-e2ad-4daf-bf61-f625f1e32f88.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/1a3b6570-aa6f-4f6f-a839-d6fb02bed58c.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/95251dad-7665-4482-a9a4-75b8bfb69c72.png",
+"https://assets.editor.p5js.org/5f2e9530dda7db0020471195/d015e354-f99c-4c8e-b2af-b668d226f572.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/c77fd7de-694a-45ed-93f5-6333b32b79b2.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/06248beb-3537-4175-9620-e9af01a6cec4.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/a9e5758f-4745-4a26-8861-3c280bdc1b15.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/967edb10-7f61-4aa7-869d-02fdeaa2ca16.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/d11287f3-9c05-4965-8ce6-3a18bc4f4853.png","https://assets.editor.p5js.org/5f2e9530dda7db0020471195/1b7bccb6-9ef4-4263-8e0a-e4648c40da80.png");
+
+  backI=loadImage("https://assets.editor.p5js.org/5f2e9530dda7db0020471195/849b1ef1-743f-453c-af78-d6009275983b.jpg");
+  bananaI=loadImage("https://assets.editor.p5js.org/5f2e9530dda7db0020471195/0b1c0046-499b-4f26-b6fc-5b578c8917a5.png")
+  obstacleI=loadImage("https://assets.editor.p5js.org/5f2e9530dda7db0020471195/4a71e33d-cb0e-4459-ac3c-090f0306f41f.png")
+  
+  
+  var score;
+}
+
+
+function setup() {
+
+  createCanvas(400,400);
+  back=createSprite(200,200,800,800)
+  back.addImage("B",backI)
+
+    monkey=createSprite(50,350,0,0)
+  monkey.addAnimation("Something",monkeyA)
+  monkey.scale=0.125
+  
+  foodGroup=new Group();
+  obstacleGroup=new Group();
+ 
+  score=0;
+  stroke("black")
+textSize(100)
+fill("black")
+  
+  invisibleG=createSprite(200,370,400,20)
+  invisibleG.visible=false
+  
+}
+
+
+function draw() {
+ background(220);
+  text("score"+score,100,200)
+    back.velocityX=-2;
+  
+  monkey.collide(invisibleG)
+   if (back.x < 0){
+    back.x = back.width/2;
+  }
+  
+  if(foodGroup.isTouching(monkey))
+    {
+      score=score+2
+      foodGroup.destroyEach()
+      
+      switch(score){
+      case 10 : monkey.scale = 0.12;
+      break;
+      case 20 : monkey.scale = 0.14;
+      break;  
+      case 30 : monkey.scale = 0.16;
+      break;      
+      case 40 : monkey.scale = 0.18;
+      break;
+      default: break;   
+          
+      }
+    }
+  
+  if(keyWentDown("space"))
+    {
+      monkey.velocityY=-20
+       }
+  
+if(obstacleGroup.isTouching(monkey))
+  {
+    monkey.scale=0.125
+    obstacleGroup.destroyEach()
+  }
+  monkey.velocityY=monkey.velocityY+2
+  
+  if(obstacleGroup.isTouching(monkey))
+    {
+      monkey.scale=0.2
+    }
+  obstacle();
+  food();
+  drawSprites();
+  
+   stroke("white");
+  textSize(20);
+  fill("white");
+  text("Score :" + score,200,50);
+}
+
+
+function obstacle()
+{
+  if(World.frameCount%100===0){
+  stone=createSprite(400,340,0,0)
+  stone.addImage("Y",obstacleI)
+  stone.scale=0.123
+  stone.velocityX=-5
+  stone.lifetime=300
+  obstacleGroup.add(stone)
+}
+}
+
+function food()
+{
+   if(World.frameCount%100===0){
+  banana=createSprite(400,300,0,0)
+  banana.addImage("B",bananaI)
+  banana.scale=0.060
+  banana.velocityX=-8
+  banana.lifetime=300
+  foodGroup.add(banana)
+   }
+}</script>
+  
+
+<main><canvas id="defaultCanvas0" class="p5Canvas" width="400" height="400" style="width: 400px; height: 400px;"></canvas></main></body></html>
